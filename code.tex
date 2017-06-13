@@ -7,42 +7,6 @@ print "Vertical"
 print "Posibles puntos de asíntota: los que anulan el denominador. Resolvemos \[",latex(f.denominator()(x)),"= 0\]"
     
     
-    
-print "\n"
-print "Horizontal u Oblícua"
-print "Calculamos \[\lim_{x\mapsto \pm\infty}",latex(f(x)),"\]"
-
-for infty in [Infinity, -Infinity]: # Calculamos en los 2 extremos:
-    print "En ",latex(infty),":"
-    ld=limit(f, x=infty)
-
-    print "\[\lim_{x\mapsto ",latex(infty),"}",f(x)," = ",ld(x),"\]"
-
-    # Distinguimos si hay horizontal u oblicua en función del resultado del límite
-
-    if (not (abs(ld(x)) == Infinity)): # HORIZONTAL
-  
-        print "    En $",latex(infty),"$ f(x) tiene una asíntota horizontal en y =",ld(x)
-
-    else: # OBLICUA
-
-        print "    Podemos tener una asíntota oblícua. Para comprobarlo calculamos: "
-        print "    \[m=\lim_{x\mapsto ",latex(infty),"} \\frac{",latex(f(x)),"}{x}=\lim_{x\mapsto ",latex(infty),"} ",latex(f(x)/x),"\]"
-        _m=limit(f/x,x=infty)
-        m=_m(x)
-        if (abs(m) != Infinity):
-            print "        En este caso, ese límite tenemos m=",m," por lo que sí hay asíntota oblícua. Calculamos n:"
-            print "    \[n=\lim_{x\mapsto ",latex(infty),"}",latex(f(x)),"- ",m,"x} = \lim_{x\mapsto ",latex(infty),"}",latex(f(x)-m*x),"\]"
-            _n = limit(f-m*x,x=infty)
-            n=_n(x)
-            y=m*x+n
-            print "        En $",latex(infty),"$f(x) tiene una asíntota oblícua en y=",y
-        else:
-            print "        En este caso, ese límite tenemos m=",m," por lo que no hay asíntota oblícua."
-
-    
-    
-
 
 print "\n\n"
 print "SIMETRÍA"

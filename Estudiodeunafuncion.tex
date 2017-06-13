@@ -10,7 +10,7 @@
 Analiza sistemáticamente la siguiente función:
 
 \begin{sagesilent}
-f = (x^2-5*x+6)/(x^2-4)
+f = (x^2-5*x+6)/(x-4)
 \end{sagesilent}
 
 \[f(x) = \sagestr{latex(f(x))}\]
@@ -30,8 +30,8 @@ def asintotesV():
 
     r+= "Soluciones: "
     for i in den0:
-    	r+="$x_"+str(k)+"="+str(i[x])+" $;\\quad"
-    	k+=1
+        r+="$x_"+str(k)+"="+str(i[x])+" $;\\quad"
+        k+=1
 
     for x0 in den0:
         r+= "\n \\paragraph{Asintota en x ="
@@ -42,7 +42,7 @@ def asintotesV():
         if (abs(li) == Infinity and abs(ld) == Infinity):
             r+= "\n\t     La recta x =" + str(x0[x]) + " es una asíntota vertical de f(x)"
         else:
-        	r+= "\n No hay asíntota vertical en x="+str(x0[x])+"."
+            r+= "\n No hay asíntota vertical en x="+str(x0[x])+"."
     return r
 \end{sagesilent}
 
@@ -51,8 +51,46 @@ $ \sagestr{latex(den)} = 0 $.
 
 \sagestr{asintotesV()}
 
+\subsubsection{Asíntotas horizontales u oblícuas}
+
+Para ello calculamos el límite tanto en $+\infty$ como en $-\infty$:
+
+\[\lim_{x\mapsto \pm\infty} \sagestr{latex(f(x))} \]
+
+\begin{sagesilent}
+def asintotesHO():
+    r=""
+    for infty in [Infinity, -Infinity]:
+        r+= "\\paragraph{En $"+latex(infty)+"$:}"
+        ld=limit(f, x=infty)  
+
+        r+= "\[\\lim_{x\\mapsto "+latex(infty)+"}" + latex(f(x)) + "="+latex(ld)+"\]"    
+
+        if (not (abs(ld) == Infinity)): # HORIZONTAL
+            r+= "En $"+latex(infty)
+            r+= "$ f(x) tiene una asíntota horizontal en y = $"+latex(ld)+"$"
+
+        else: # OBLICUA
+            r+= "Podemos tener una asíntota oblícua. Para comprobarlo calculamos: "
+            r+= "\[m=\\lim_{x\\mapsto "+latex(infty)+"} \\frac{"+latex(f(x))+"}{x}=\\lim_{x\\mapsto "+latex(infty)+"} "+latex(f(x)/x)+"\]"
+            _m=limit(f/x,x=infty)
+            m=_m
+            if (abs(m) != Infinity):
+                r+= "        En este caso+ ese límite tenemos m="+latex(m)+" por lo que sí hay asíntota oblícua. Calculamos n:"
+                r+= "    \[n=\\lim_{x\\mapsto "+latex(infty)+"}\\left("+latex(f(x))+"-"+latex(m)+"x \\right) = \\lim_{x\\mapsto "+latex(infty)+"}"+latex(f(x)-m*x)+"\]"
+                _n = limit(f-m*x,x=infty)
+                n=_n
+                y=m*x+n
+                r+= "En $"+latex(infty)+"$ f(x) tiene una asíntota oblícua en y="+latex(y)
+            else:
+                r+= "En este caso, ese límite tenemos m="+latex(m)+" por lo que no hay asíntota oblícua."
+
+    return r
+
+\end{sagesilent}
 
 
+\sagestr{asintotesHO()}
 
 
 
