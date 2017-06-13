@@ -1,0 +1,61 @@
+\documentclass[nochap,palatino]{apuntes}
+
+\usepackage{sagetex}
+
+\begin{document}
+
+\section{Análisis sistemático de una función}
+
+\begin{problem}
+Analiza sistemáticamente la siguiente función:
+
+\begin{sagesilent}
+f = (x^2-5*x+6)/(x^2-4)
+\end{sagesilent}
+
+\[f(x) = \sagestr{latex(f(x))}\]
+
+\solution
+
+
+\subsection{Asíntotas}
+\subsubsection{Asíntotas verticales}
+
+\begin{sagesilent}
+den=f.denominator(normalize=False)
+den0=solve(f.denominator(normalize=False) == 0,x,solution_dict=True)
+def asintotesV():
+    r=""
+    k=0
+
+    r+= "Soluciones: "
+    for i in den0:
+    	r+="$x_"+str(k)+"="+str(i[x])+" $;\\quad"
+    	k+=1
+
+    for x0 in den0:
+        r+= "\n \\paragraph{Asintota en x ="
+        r+= str(x0[x])+"}"
+        ld=limit(f,x=x0[x],dir="plus")
+        li=limit(f,x=x0[x],dir="minus")
+        r+= "\n Calculamos \[\\lim_{x\\mapsto " + str(x0[x]) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right.\] "
+        if (abs(li) == Infinity and abs(ld) == Infinity):
+            r+= "\n\t     La recta x =" + str(x0[x]) + " es una asíntota vertical de f(x)"
+        else:
+        	r+= "\n No hay asíntota vertical en x="+str(x0[x])+"."
+    return r
+\end{sagesilent}
+
+Los posibles puntos de asíntota son los que anulan el denominador, para ello calculamos:
+$ \sagestr{latex(den)} = 0 $.
+
+\sagestr{asintotesV()}
+
+
+
+
+
+
+\end{problem}
+
+\end{document}

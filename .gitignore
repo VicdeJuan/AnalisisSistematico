@@ -1,3 +1,4 @@
+*.sagetex*
 *.pyg
 _minted*
 *.tmp
