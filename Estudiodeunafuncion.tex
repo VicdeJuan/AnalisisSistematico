@@ -40,9 +40,9 @@ def asintotesV():
         li=limit(f,x=x0[x],dir="minus")
         r+= "\n Calculamos \[\\lim_{x\\mapsto " + str(x0[x]) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right.\] "
         if (abs(li) == Infinity and abs(ld) == Infinity):
-            r+= "\n\t     La recta x =" + str(x0[x]) + " es una asíntota vertical de f(x)"
+            r+= "\n\t     La recta x =" + str(x0[x]) + " es una \\textbf{asíntota vertical} de f(x)"
         else:
-            r+= "\n No hay asíntota vertical en x="+str(x0[x])+"."
+            r+= "\n \\textbf{No hay asíntota vertical} en x="+str(x0[x])+"."
     return r
 \end{sagesilent}
 
@@ -68,7 +68,7 @@ def asintotesHO():
 
         if (not (abs(ld) == Infinity)): # HORIZONTAL
             r+= "En $"+latex(infty)
-            r+= "$ f(x) tiene una asíntota horizontal en y = $"+latex(ld)+"$"
+            r+= "$ f(x) tiene una \\textbf{asíntota horizontal} en y = $"+latex(ld)+"$"
 
         else: # OBLICUA
             r+= "Podemos tener una asíntota oblícua. Para comprobarlo calculamos: "
@@ -81,9 +81,9 @@ def asintotesHO():
                 _n = limit(f-m*x,x=infty)
                 n=_n
                 y=m*x+n
-                r+= "En $"+latex(infty)+"$ f(x) tiene una asíntota oblícua en y="+latex(y)
+                r+= "En $"+latex(infty)+"$ f(x) tiene una \\textbf{asíntota oblícua} en y="+latex(y)
             else:
-                r+= "En este caso, ese límite tenemos m="+latex(m)+" por lo que no hay asíntota oblícua."
+                r+= "En este caso, ese límite tenemos m="+latex(m)+" por lo que \\textbf{no hay asíntota} oblícua (ni horizontal)."
 
     return r
 
