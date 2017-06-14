@@ -14,6 +14,8 @@ def asintotesV():
     for i in den0:
         r+="$x_"+str(k)+"="+str(i)+" $;\\quad"
         k+=1
+    if (den0 == []):
+        r+= "No tiene soluciones reales"
 
     for x0 in den0:
         r+= "\n \\paragraph{Asintota en x ="
@@ -119,6 +121,8 @@ def derivadaNula():
     for r in sols:
         retval += "$x_"+str(i)+" = "+latex(r)+"$;\\quad"
         i+=1
+    if (sols == []):
+        retval += "No tiene soluciones reales"
     return retval
 
 ptscrit = flatten([den0,sols])
@@ -183,6 +187,7 @@ g=diff(f,x,1)
 max=[]
 min=[]
 def diffsign():
+
     prev=0
     actual=0
     retval = "\\begin{itemize}"

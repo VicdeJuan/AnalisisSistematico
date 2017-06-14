@@ -2,20 +2,20 @@
 
 \usepackage{sagetex}
 
+\newcommand{\newexample}[1]{
+	\section{Análisis sistemático de una función}
+	Analiza sistemáticamente la siguiente función:
+	\input{#1}
+	\input{tex/Solution_Template}
+	\newpage
+}
+
 \begin{document}
 
-\section{Análisis sistemático de una función}
+\newexample{tex/function}
+\newexample{tex/function2}
+%\newexample{tex/function3}
 
-Analiza sistemáticamente la siguiente función:
-\input{function}
-\input{tex/Solution_Template}
-
-\newpage
-
-\section{Analiza sistemáticamente la siguiente función}
-
-\input{tex/function2}
-\input{tex/Solution_Template}
 
 
 \end{document}
