@@ -155,11 +155,13 @@ def intervalos():
         r += "$\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$;\\quad"  
     return r
 
+g=diff(f,x,1)
+g=g.simplify_full()
 \end{sagesilent}
 
 Calculamos la derivada de la función:
 
-\[f'(x) = \sagestr{latex(diff(f,x,1)(x))} \]
+\[f'(x) = \sagestr{latex(diff(f,x,1)(x))} \]% = \sagestr{latex(g)} \]
 
 Para calcular los puntos críticos, resolvemos f'(x) = 0 cuyas soluciones son: 
 \sagestr{derivadaNula()}
@@ -191,20 +193,46 @@ def random_between(j,k):
     return int(random()*(k2-j2+1))+j2
 
 g=diff(f,x,1)
+max=[]
+min=[]
 def diffsign():
+    prev=0
+    actual=0
     retval = "\\begin{itemize}"
     for i in xrange(len(recta)-1):
         rval=random_between(recta[i],recta[i+1])
         retval += "\\item $\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$: Tomamos, por ejemplo, f'($"+latex(rval)+"$) y miramos su signo:" 
+        prev=actual
+        actual=sign(g(rval))
         if sign(g(rval))==1: 
             retval += "Positivo, por lo que la función \\textbf{crece} en este intervalo"  
         else:
             retval += "Negativo, por lo que la función \\textbf{decrece} en este intervalo"
+        if (prev == -1 and actual == 1):
+            min.append(recta[i])
+        if (prev == 1 and actual == -1):
+            max.append(recta[i])
     return retval+"\\end{itemize}"
+
+def printlist(m):
+    retval = ""
+    for _m in m:
+    	retval += "x = " + latex(_m) + ";\\quad"
+    return retval
 
 \end{sagesilent}
 
 \sagestr{diffsign()}
+
+\subsection{Máximos relativos}
+Los puntos en los que a la izquiera la función crece (derivada positiva) y a la derecha decrece (derivada negativa) son los máximos relativos. En este caso: 
+
+\[\text{Máximos relativos: } \sagestr{printlist(max)}\]
+
+\subsection{Mínimos relativos}
+Los puntos en los que a la izquiera la función crece (derivada positiva) y a la derecha decrece (derivada negativa) son los máximos relativos. En este caso son: 
+
+\[\text{Mínimos relativos: }\sagestr{printlist(min)}\]
 
 \end{problem}
 
