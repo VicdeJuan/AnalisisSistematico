@@ -9,9 +9,7 @@
 \begin{problem}
 Analiza sistemáticamente la siguiente función:
 
-\begin{sagesilent}
-f = (x^2-5*x+6)/(x-4)
-\end{sagesilent}
+\input{function}
 
 \[f(x) = \sagestr{latex(f(x))}\]
 
@@ -89,9 +87,23 @@ def asintotesHO():
 
 \end{sagesilent}
 
-
 \sagestr{asintotesHO()}
 
+\section{Simetría}
+\begin{sagesilent}
+def simetria():
+    if (f(x) == f(-x)):
+        return "Sí, a f(x), entonces la función es par"
+    elif (f(x) == - f(-x)):
+        return "Sí, a -f(x) entonces la función es impar"
+    else:
+        return "No, entonces la función no tiene simetría respecto del eje Y."
+\end{sagesilent}
+
+Calculamos 
+\[f(-x) = \sage{latex(f(-x))}\]
+
+¿Es igual a f(x) o a -f(x)?" \sagestr{simetria()}
 
 
 \end{problem}
