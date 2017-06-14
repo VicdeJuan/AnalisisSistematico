@@ -105,6 +105,23 @@ Calculamos
 
 ¿Es igual a f(x) o a -f(x)?" \sagestr{simetria()}
 
+\section{Puntos de corte con los ejes}
+\begin{sagesilent}
+def puntosEjeX():
+    r=""
+    for i in xrange(len(f.roots())):
+        r+="$x_"+str(i)+" = "+latex(f.roots()[i][0])+"$;\\quad"
+    return r
+\end{sagesilent}
+
+\subsection{Eje X}
+Resolvemos f(x) = 0 cuya solución es: 
+\sagestr{puntosEjeX()}
+
+\subsection{Eje Y}
+Resolvemos $f(0)=\sagestr{latex(f(0))}$
+
+
 
 \end{problem}
 
