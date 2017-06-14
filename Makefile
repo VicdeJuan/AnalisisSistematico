@@ -3,7 +3,7 @@ TARGET=Estudiodeunafuncion
 all: sage
 	pdflatex $(TARGET) 
 
-tex:
+tex: tex $(TARGET).tex
 	pdflatex $(TARGET) 	
 
 sage: tex
