@@ -144,17 +144,19 @@ def ptsCriticos():
         i+=1
     return r
 
-[recta.append(p[x]) for p in ptscrit]
+for p in ptscrit:
+     recta.append(p[x])
 recta.append(+Infinity)
 recta=sorted(recta)
 
 def intervalos():
-    r=""
+    r = ""
     for i in xrange(len(recta)-1):
-	    r+= "$("+latex(recta[i])+","+latex(recta[i+1])+")$\\n"  
-	return r
+        r += "$\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$;\\quad"  
+    return r
 
 \end{sagesilent}
+
 Calculamos la derivada de la función:
 
 \[f'(x) = \sagestr{latex(diff(f,x,1)(x))} \]
@@ -168,13 +170,11 @@ Por lo tanto, los puntos críticos son (OJO: Se deben incluir los puntos de disc
 
 Con estos ingredientes ya podemos estudiar la monotonía. Para ello tomamos los siguientes intervalos en los que los puntos críticos dividen la recta real:
 
+\sagestr{intervalos()}
 
-
-
+Y ahora, estudiamos la monotonía el signo de la derivada en esos intervalos:
    
 \begin{sagesilent}
-
-
 
 def random_between(j,k):
     
@@ -189,7 +189,22 @@ def random_between(j,k):
         
         k2=k-1 # El +1 es para evitar divisiones por 0 que podrían darse
     return int(random()*(k2-j2+1))+j2
+
+g=diff(f,x,1)
+def diffsign():
+    retval = "\\begin{itemize}"
+    for i in xrange(len(recta)-1):
+        rval=random_between(recta[i],recta[i+1])
+        retval += "\\item $\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$: Tomamos, por ejemplo, f'($"+latex(rval)+"$) y miramos su signo:" 
+        if sign(g(rval))==1: 
+            retval += "Positivo, por lo que la función \\textbf{crece} en este intervalo"  
+        else:
+            retval += "Negativo, por lo que la función \\textbf{decrece} en este intervalo"
+    return retval+"\\end{itemize}"
+
 \end{sagesilent}
+
+\sagestr{diffsign()}
 
 \end{problem}
 
