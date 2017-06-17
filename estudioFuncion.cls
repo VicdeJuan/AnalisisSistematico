@@ -164,7 +164,7 @@
 			\begin{flushright}
 				\footnotesize
 				\vspace{5pt}
-				\href{http://github.com/VicdeJuan/EstudioFuncion}{Código fuente en Github}
+				\href{https://github.com/VicdeJuan/AnalisisSistematico}{Código fuente en Github}
 			\end{flushright}
 		\end{minipage}
 	\fi
