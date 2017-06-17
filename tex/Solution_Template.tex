@@ -19,25 +19,32 @@ def asintotesV():
 
     for x0 in den0:
         r+= "\n \\paragraph{Asintota en x ="
-        r+= str(x0)+"}"
+        r+= latex(x0)+"}"
         ld=limit(f,x=x0,dir="plus")
         li=limit(f,x=x0,dir="minus")
-        r+= "\n Calculamos \[\\lim_{x\\mapsto " + str(x0) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right.\] "
-        if (abs(li) == Infinity and abs(ld) == Infinity):
-            r+= "\n\t     La recta x =" + str(x0) + " es una \\textbf{asíntota vertical} de f(x)"
+        r+= "\n Calculamos \[\\lim_{x\\mapsto " + latex(x0) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right.\] "
+        if (abs(li) == Infinity and abs(ld) == Infinity and sign(li) == sign(ld)):
+            r+= "\n La recta x =" + latex(x0) + " es una \\textbf{asíntota vertical} de f(x)"
+        if (abs(li) == Infinity and abs(ld) == Infinity and sign(li) != sign(ld)):
+            r+= "\n Aunque el límite no exista (porque los límites laterales son diferentes), su magnitud sigue siendo infinita por ambos lados, por lo que la recta x =" + latex(x0) + " es una \\textbf{asíntota vertical} de f(x)"
         else:
-            r+= "\n \\textbf{No hay asíntota vertical} en x="+str(x0)+"."
+            r+= "\n \\textbf{No hay asíntota vertical} en $x="+latex(x0)+"$."
     return r
 \end{sagesilent}
 
-Los posibles puntos de asíntota son los que anulan el denominador, para ello calculamos:
-$ \sagestr{latex(den)} = 0 $.
+Los posibles puntos en los que la función puede tener una asíntota vertical son aquellos en los que se anula el denominador. 
+%
+Por ello calculamos:
+
+\[\sagestr{latex(den)} = 0 \]
 
 \sagestr{asintotesV()}
 
 \subsubsection{Asíntotas horizontales u oblícuas}
 
-Para ello calculamos el límite tanto en $+\infty$ como en $-\infty$:
+Las asíntotas horizontales y oblicuas nos dan la información acerca de la tendencia de la función en $-\infty$ y en $+\infty$.
+
+Para calcular las asíntotas, necesitamos calcular el límite de la función tanto en $+\infty$ como en $-\infty$:
 
 \[\lim_{x\mapsto \pm\infty} \sagestr{latex(f(x))} \]
 
@@ -45,29 +52,28 @@ Para ello calculamos el límite tanto en $+\infty$ como en $-\infty$:
 def asintotesHO():
     r=""
     for infty in [Infinity, -Infinity]:
-        r+= "\\paragraph{En $"+latex(infty)+"$:}"
+        r+= "\\paragraph{Límite de la función en $"+latex(infty)+"$:}"
         ld=limit(f, x=infty)  
 
-        r+= "\[\\lim_{x\\mapsto "+latex(infty)+"}" + latex(f(x)) + "="+latex(ld)+"\]"    
+        r+= "\[\\lim_{x\\mapsto "+latex(infty)+"}" + latex(f(x)) + "= ... = "+latex(ld)+"\]"    
 
         if (not (abs(ld) == Infinity)): # HORIZONTAL
             r+= "En $"+latex(infty)
-            r+= "$ f(x) tiene una \\textbf{asíntota horizontal} en y = $"+latex(ld)+"$"
+            r+= "$ f(x) tiene una \\textbf{asíntota horizontal} en $y = "+latex(ld)+"$."
 
         else: # OBLICUA
-            r+= "Podemos tener una asíntota oblícua. Para comprobarlo calculamos: "
-            r+= "\[m=\\lim_{x\\mapsto "+latex(infty)+"} \\frac{"+latex(f(x))+"}{x}=\\lim_{x\\mapsto "+latex(infty)+"} "+latex(f(x)/x)+"\]"
-            _m=limit(f/x,x=infty)
-            m=_m
+            r+= "Como el límite obtenido es de magnitud infinita la función no tiene asíntota horizontal, pero puede tener una asíntota oblícua. Para saber si tiene una asíntota oblícua calculamos: "
+            m=limit(f/x,x=infty)
+            r+= "\[m=\\lim_{x\\mapsto "+latex(infty)+"} \\frac{f(x)}{x} = \\lim_{x\\mapsto "+latex(infty)+"} \\frac{"+latex(f(x))+"}{x}=\\lim_{x\\mapsto "+latex(infty)+"} "+latex(f(x)/x)+" = ... = "+latex(m)+"\]"
             if (abs(m) != Infinity):
-                r+= "        En este caso+ ese límite tenemos m="+latex(m)+" por lo que sí hay asíntota oblícua. Calculamos n:"
-                r+= "    \[n=\\lim_{x\\mapsto "+latex(infty)+"}\\left("+latex(f(x))+"-"+latex(m)+"x \\right) = \\lim_{x\\mapsto "+latex(infty)+"}"+latex(f(x)-m*x)+"\]"
+                r+= "        En este caso tenemos m=$"+latex(m)+"$ por lo que sí hay asíntota oblícua. Calculamos n:"
+                r+= "    \[n= \\lim_{x\\mapsto "+latex(infty)+"} f(x) - m·x = \\lim_{x\\mapsto "+latex(infty)+"}\\left("+latex(f(x))+"-"+latex(m)+"x \\right) = \\lim_{x\\mapsto "+latex(infty)+"}"+latex(f(x)-m*x)+"\]"
                 _n = limit(f-m*x,x=infty)
                 n=_n
                 y=m*x+n
-                r+= "En $"+latex(infty)+"$ f(x) tiene una \\textbf{asíntota oblícua} en y="+latex(y)
+                r+= "En $"+latex(infty)+"$, f(x) tiene una \\textbf{asíntota oblícua} en $y="+latex(y)+"$."
             else:
-                r+= "En este caso, ese límite tenemos m="+latex(m)+" por lo que \\textbf{no hay asíntota} oblícua (ni horizontal)."
+                r+= "En este caso, ese límite tenemos $m="+latex(m)+"$ por lo que \\textbf{no hay asíntota} oblícua (ni horizontal)."
 
     return r
 
@@ -79,33 +85,48 @@ def asintotesHO():
 \begin{sagesilent}
 def simetria():
     if (f(x) == f(-x)):
-        return "Sí, a f(x), entonces la función es par"
+        return "Sí, a f(x), entonces la función es par."
     elif (f(x) == - f(-x)):
-        return "Sí, a -f(x) entonces la función es impar"
+        return "Sí, a -f(x) entonces la función es impar."
     else:
         return "No, entonces la función no tiene simetría respecto del eje Y."
 \end{sagesilent}
 
-Calculamos 
+Para estudiar la simetría de una función calculamos $f(-x)$ y comparamos con $f(x)$. 
+%
+En este caso:
+
 \[f(-x) = \sage{latex(f(-x))}\]
 
-¿Es igual a f(x) o a -f(x)?" \sagestr{simetria()}
+¿Es igual a f(x) o a -f(x)? \sagestr{simetria()}
 
 \subsection{Puntos de corte con los ejes}
 \begin{sagesilent}
 def puntosEjeX():
     r=""
-    for i in xrange(len(f.roots())):
-        r+="$x_"+str(i)+" = "+latex(f.roots()[i][0])+"$;\\quad"
+    _roots = solve(f(x)==0,x,solution_dict=True)
+    for i in xrange(len(_roots)):
+        r+="$x_"+str(i)+" = "+latex(_roots[i][x])+"$;\\quad"
     return r
+
+def puntosEjeY():
+    r=""
+    if (f.denominator()(0) != 0):
+        r += latex(f(0))
+    else:
+        r+= "No existe."
+    return r
+
 \end{sagesilent}
 
 \subsubsection{Eje X}
-Resolvemos f(x) = 0 cuya solución es: 
+Para calcular los puntos de corte de la función con el eje x resolvemos la ecuación $f(x) = 0$ cuya solución es: 
 \sagestr{puntosEjeX()}
 
 \subsubsection{Eje Y}
-Resolvemos $f(0)=\sagestr{latex(f(0))}$
+Para calcular los puntos de corte de la función con el eje y calculamos $f(0)$. 
+%
+En este caso: $f(0)=\sagestr{puntosEjeY()}$
 
 
 \subsection{Estudio de la monotonía}
@@ -119,10 +140,10 @@ def derivadaNula():
     i=0
     retval=""
     for r in sols:
-        retval += "$x_"+str(i)+" = "+latex(r)+"$;\\quad"
+        retval += "$x_"+str(i)+" = "+latex(r.full_simplify())+"$;\\quad"
         i+=1
     if (sols == []):
-        retval += "No tiene soluciones reales"
+        retval += "No tiene soluciones reales."
     return retval
 
 ptscrit = flatten([den0,sols])
@@ -151,18 +172,26 @@ g=diff(f,x,1)
 g=g.simplify_full()
 \end{sagesilent}
 
+La monotonía responde a los intervalos de crecimiento y decrecimiento de la función, así como a la existencia de extremos relativos.
+%
+Para ello, la mejor herramienta es utilizar la derivada de la función.
+
 Calculamos la derivada de la función:
 
 \[f'(x) = \sagestr{latex(diff(f,x,1)(x))} \]% = \sagestr{latex(g)} \]
 
-Para calcular los puntos críticos, resolvemos f'(x) = 0 cuyas soluciones son: 
+Para calcular los puntos críticos\footnote{Aquellos puntos que pueden marcar un cambio en la tendencia de la función.}, resolvemos f'(x) = 0 cuyas soluciones son: 
 \sagestr{derivadaNula()}
 
-Por lo tanto, los puntos críticos son (OJO: Se deben incluir los puntos de discontinuidad): 
+E incluimos los puntos de discontinuidad (en caso de haberlos) ya que se puede producir un cambio en la tendencia de la función. 
+%
+Por lo tanto, los puntos críticos son : 
 \sagestr{ptsCriticos()}
 
 
-Con estos ingredientes ya podemos estudiar la monotonía. Para ello tomamos los siguientes intervalos en los que los puntos críticos dividen la recta real:
+Con estos resultados ya podemos estudiar los intervalos de crecimiento y decrecimiento. 
+%
+Para ello tomamos los siguientes intervalos en los que los puntos críticos dividen la recta real:
 
 \sagestr{intervalos()}
 

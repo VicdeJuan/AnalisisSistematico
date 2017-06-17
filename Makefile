@@ -1,12 +1,12 @@
-TARGET=Estudiodeunafuncion
+TARGET=main
 
 all: sage
 	pdflatex $(TARGET) 
 
-tex: tex $(TARGET).tex
+latex: tex/ $(TARGET).tex
 	pdflatex $(TARGET) 	
 
-sage: tex
+sage: latex
 	sage $(TARGET).sagetex.sage
 
 resage:
