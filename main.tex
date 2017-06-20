@@ -5,6 +5,10 @@
 \date{\today}
 \subtitle{Algunos ejemplos resueltos}
 
+\newif\ifbreve
+\brevetrue
+
+
 \begin{abstract}
 
 Este documento trata el estudio sistemático de las siguientes funciones:
@@ -30,7 +34,11 @@ Este documento trata el estudio sistemático de las siguientes funciones:
 	\begin{mdframed}
 	\[f(x) = \sagestr{latex(f(x))}\]
 	\end{mdframed}
-	\input{tex/Solution_Template}
+	\ifbreve
+		\input{tex/Solution_Template_scheme}
+	\else
+		\input{tex/Solution_Template_full}
+	\fi
 	\newpage
 }
 

@@ -1,0 +1,251 @@
+
+\subsection{Asíntotas}
+\subsubsection{Asíntotas verticales}
+
+\begin{sagesilent}
+den=f.denominator(normalize=False)
+_den0=solve(f.denominator(normalize=False) == 0,x,solution_dict=True)
+den0 = [a[x] for a in _den0 if imag(a[x])==0]
+def asintotesV():
+    r=""
+    k=0
+
+    r+= "Soluciones: "
+    for i in den0:
+        r+="$x_"+str(k)+"="+str(i)+" $;\\quad"
+        k+=1
+    if (den0 == []):
+        r+= "No tiene soluciones reales"
+
+    for x0 in den0:
+        r+= "\n \\paragraph{Asintota en x ="
+        r+= latex(x0)+"}"
+        ld=limit(f,x=x0,dir="plus")
+        li=limit(f,x=x0,dir="minus")
+        r+= "\n \[\\lim_{x\\mapsto " + latex(x0) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right."
+        if (abs(li) == Infinity and abs(ld) == Infinity):
+            r+= "\\implies \\textbf{  A.V. en } x=" + latex(x0) + "\]"
+        else:
+            r+= "\\implies \\textbf{No A.V. en } x="+latex(x0)+"\]"
+    return r
+\end{sagesilent}
+
+
+\[\text{Posible A.V. en }\sagestr{latex(den)} = 0 \]
+
+\sagestr{asintotesV()}
+
+\subsubsection{Asíntotas horizontales u oblícuas}
+
+Las asíntotas horizontales y oblicuas nos dan la información acerca de la tendencia de la función en $-\infty$ y en $+\infty$.
+
+Para calcular las asíntotas, necesitamos calcular el límite de la función tanto en $+\infty$ como en $-\infty$:
+
+\[\lim_{x\mapsto \pm\infty} \sagestr{latex(f(x))} \]
+
+\begin{sagesilent}
+def asintotesHO():
+    r=""
+    for infty in [Infinity, -Infinity]:
+        r+= "\\paragraph{Límite de la función en $"+latex(infty)+"$:}"
+        ld=limit(f, x=infty)  
+
+        r+= "\[\\lim_{x\\mapsto "+latex(infty)+"}" + latex(f(x)) + "= ... = "+latex(ld)+"\]"    
+
+        if (not (abs(ld) == Infinity)): # HORIZONTAL
+            r+= "En $"+latex(infty)
+            r+= "$ f(x) tiene una \\textbf{asíntota horizontal} en $y = "+latex(ld)+"$."
+
+        else: # OBLICUA
+            r+= "Como el límite obtenido es de magnitud infinita la función no tiene asíntota horizontal, pero puede tener una asíntota oblícua. Para saber si tiene una asíntota oblícua calculamos: "
+            m=limit(f/x,x=infty)
+            r+= "\[m=\\lim_{x\\mapsto "+latex(infty)+"} \\frac{f(x)}{x} = \\lim_{x\\mapsto "+latex(infty)+"} \\frac{"+latex(f(x))+"}{x}=\\lim_{x\\mapsto "+latex(infty)+"} "+latex(f(x)/x)+" = ... = "+latex(m)+"\]"
+            if (abs(m) != Infinity):
+                r+= "        En este caso tenemos m=$"+latex(m)+"$ por lo que sí hay asíntota oblícua. Calculamos n:"
+                r+= "    \[n= \\lim_{x\\mapsto "+latex(infty)+"} f(x) - m·x = \\lim_{x\\mapsto "+latex(infty)+"}\\left("+latex(f(x))+"-"+latex(m)+"x \\right) = \\lim_{x\\mapsto "+latex(infty)+"}"+latex(f(x)-m*x)+"\]"
+                _n = limit(f-m*x,x=infty)
+                n=_n
+                y=m*x+n
+                r+= "En $"+latex(infty)+"$, f(x) tiene una \\textbf{asíntota oblícua} en $y="+latex(y)+"$."
+            else:
+                r+= "En este caso, ese límite tenemos $m="+latex(m)+"$ por lo que \\textbf{no hay asíntota} oblícua (ni horizontal)."
+
+    return r
+
+\end{sagesilent}
+
+\sagestr{asintotesHO()}
+
+\subsection{Simetría}
+\begin{sagesilent}
+def simetria():
+    if (f(x) == f(-x)):
+        return "Sí, a f(x), entonces la función es par."
+    elif (f(x) == - f(-x)):
+        return "Sí, a -f(x) entonces la función es impar."
+    else:
+        return "No, entonces la función no tiene simetría respecto del eje Y."
+\end{sagesilent}
+
+Para estudiar la simetría de una función calculamos $f(-x)$ y comparamos con $f(x)$. 
+%
+En este caso:
+
+\[f(-x) = \sage{latex(f(-x))}\]
+
+¿Es igual a f(x) o a -f(x)? \sagestr{simetria()}
+
+\subsection{Puntos de corte con los ejes}
+\begin{sagesilent}
+def puntosEjeX():
+    r=""
+    _roots = solve(f(x)==0,x,solution_dict=True)
+    for i in xrange(len(_roots)):
+        r+="$x_"+str(i)+" = "+latex(_roots[i][x])+"$;\\quad"
+    return r
+
+def puntosEjeY():
+    r=""
+    if (f.denominator()(0) != 0):
+        r += latex(f(0))
+    else:
+        r+= "No existe."
+    return r
+
+\end{sagesilent}
+
+\subsubsection{Eje X}
+Para calcular los puntos de corte de la función con el eje x resolvemos la ecuación $f(x) = 0$ cuya solución es: 
+\sagestr{puntosEjeX()}
+
+\subsubsection{Eje Y}
+Para calcular los puntos de corte de la función con el eje y calculamos $f(0)$. 
+%
+En este caso: $f(0)=\sagestr{puntosEjeY()}$
+
+
+\subsection{Estudio de la monotonía}
+
+\begin{sagesilent}
+
+_sols = solve(diff(f(x))==0,x,solution_dict=True)
+sols = [a[x] for a in _sols if imag(a[x])==0]
+
+def derivadaNula():
+    i=0
+    retval=""
+    for r in sols:
+        retval += "$x_"+str(i)+" = "+latex(r.full_simplify())+"$;\\quad"
+        i+=1
+    if (sols == []):
+        retval += "No tiene soluciones reales."
+    return retval
+
+ptscrit = flatten([den0,sols])
+recta=[-Infinity]
+
+def ptsCriticos():
+    i=0
+    r=""
+    for p in ptscrit:
+        r+= "$x_"+str(i)+"="+latex(p)+"$;\\quad"
+        i+=1
+    return r
+
+for p in ptscrit:
+     recta.append(p)
+recta.append(+Infinity)
+recta=sorted(recta)
+
+def intervalos():
+    r = ""
+    for i in xrange(len(recta)-1):
+        r += "$\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$;\\quad"  
+    return r
+
+g=diff(f,x,1)
+g=g.simplify_full()
+\end{sagesilent}
+
+La monotonía responde a los intervalos de crecimiento y decrecimiento de la función, así como a la existencia de extremos relativos.
+%
+Para ello, la mejor herramienta es utilizar la derivada de la función.
+
+Calculamos la derivada de la función:
+
+\[f'(x) = \sagestr{latex(diff(f,x,1).full_simplify()(x))} \]% = \sagestr{latex(g)} \]
+
+Para calcular los puntos críticos\footnote{Aquellos puntos que pueden marcar un cambio en la tendencia de la función.}, resolvemos f'(x) = 0 cuyas soluciones son: 
+\sagestr{derivadaNula()}
+
+E incluimos los puntos de discontinuidad (en caso de haberlos) ya que se puede producir un cambio en la tendencia de la función. 
+%
+Por lo tanto, los puntos críticos son : 
+\sagestr{ptsCriticos()}
+
+
+Con estos resultados ya podemos estudiar los intervalos de crecimiento y decrecimiento. 
+%
+Para ello tomamos los siguientes intervalos en los que los puntos críticos dividen la recta real:
+
+\sagestr{intervalos()}
+
+Y ahora, estudiamos la monotonía el signo de la derivada en esos intervalos:
+   
+\begin{sagesilent}
+
+def random_between(j,k):
+    
+    if (j==-Infinity):
+        j2=-9999
+    else:
+        j2=j+1 # El +1 es para evitar divisiones por 0 que podrían darse.
+        
+    if (k==Infinity):
+        k2=9999
+    else:        
+        k2=k-1 # El +1 es para evitar divisiones por 0 que podrían darse
+    return int(random()*(k2-j2+1))+j2
+
+g=diff(f,x,1)
+max=[]
+min=[]
+def diffsign():
+
+    prev=0
+    actual=0
+    retval = "\\begin{itemize}"
+    for i in xrange(len(recta)-1):
+        rval=random_between(recta[i],recta[i+1])
+        retval += "\\item $\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$: Tomamos, por ejemplo, f'($"+latex(rval)+"$) y miramos su signo:" 
+        prev=actual
+        actual=sign(g(rval))
+        if sign(g(rval))==1: 
+            retval += "Positivo, por lo que la función \\textbf{crece} en este intervalo"  
+        else:
+            retval += "Negativo, por lo que la función \\textbf{decrece} en este intervalo"
+        if (prev == -1 and actual == 1):
+            min.append(recta[i])
+        if (prev == 1 and actual == -1):
+            max.append(recta[i])
+    return retval+"\\end{itemize}"
+
+def printlist(m):
+    retval = "\\{"
+    for _m in m:
+    	retval += "x = " + latex(_m) + ";\\quad"
+    return retval+"\\}"
+
+\end{sagesilent}
+
+\sagestr{diffsign()}
+
+\subsubsection{Máximos relativos}
+Los puntos en los que a la izquiera la función crece (derivada positiva) y a la derecha decrece (derivada negativa) son los máximos relativos. En este caso: 
+
+\[\text{Máximos relativos: } \sagestr{printlist(max)}\]
+
+\subsubsection{Mínimos relativos}
+Los puntos en los que a la izquiera la función crece (derivada positiva) y a la derecha decrece (derivada negativa) son los máximos relativos. En este caso son: 
+
+\[\text{Mínimos relativos: }\sagestr{printlist(min)}\]
