@@ -1,3 +1,10 @@
+%%% DEFINIR TieneLog=1 si la función tiene logaritmo.
+\begin{sagesilent}
+TieneLog=0
+\end{sagesilent}
+
+
+
 
 \subsection{Asíntotas}
 \subsubsection{Asíntotas verticales}
@@ -12,21 +19,44 @@ def asintotesV():
 
     r+= "Soluciones: "
     for i in den0:
-        r+="$x_"+str(k)+"="+str(i)+" $;\\quad"
+        r+="$x_"+str(k)+"="+latex(i)+" $;\\quad"
         k+=1
     if (den0 == []):
         r+= "No tiene soluciones reales"
 
+    if (TieneLog == 1):
+        r+= "\\paragraph{Atención: } Como la función es un logaritmo, podríamos tener una asíntota vertical (ya que $\\displaystyle\\lim_{x\\mapsto 0^+} \\log(x) = -\infty$). Vamos a comprobarlo.\\\\"
+        
+        r+= "Para ello, calculamos los puntos en los que se haga 0 el interior del logaritmo .\\\\"
+
+        _log0 = solve(exp(f)==0,x,solution_dict=True)
+        log0 = [a[x] for a in _log0 if imag(a[x])==0]  
+
+        r+= "En este caso:"
+
+        r+= "\\[ "+latex(exp(f))+"= 0 \\]"
+
+        r+= "Soluciones: "
+        for i in log0:
+            r+="$x_"+str(k)+"="+latex(i)+" $;\\quad"
+            k+=1
+            den0.append(i)
+        if (log0 == []):
+            r+= "No tiene soluciones reales"
+
+    if (den0 == []):
+        r+= "\paragraph{La función no tiene A.V.}"
+
     for x0 in den0:
         r+= "\n \\paragraph{Asintota en x ="
-        r+= latex(x0)+"}"
+        r+= "$"+latex(x0)+"$}"
         ld=limit(f,x=x0,dir="plus")
         li=limit(f,x=x0,dir="minus")
         r+= "\n Calculamos \[\\lim_{x\\mapsto " + latex(x0) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right.\] "
         if (abs(li) == Infinity and abs(ld) == Infinity and sign(li) == sign(ld)):
             r+= "\n La recta x =" + latex(x0) + " es una \\textbf{asíntota vertical} de f(x)"
         if (abs(li) == Infinity and abs(ld) == Infinity and sign(li) != sign(ld)):
-            r+= "\n Aunque el límite no exista (porque los límites laterales son diferentes), su magnitud sigue siendo infinita por ambos lados, por lo que la recta x =" + latex(x0) + " es una \\textbf{asíntota vertical} de f(x)"
+            r+= "\n Aunque el límite no exista (porque los límites laterales son diferentes), su magnitud sigue siendo infinita por ambos lados, por lo que la recta x = $" + latex(x0) + "$ es una \\textbf{asíntota vertical} de f(x)"
         else:
             r+= "\n \\textbf{No hay asíntota vertical} en $x="+latex(x0)+"$."
     return r
@@ -111,10 +141,13 @@ def puntosEjeX():
 
 def puntosEjeY():
     r=""
-    if (f.denominator()(0) != 0):
+    if (f.denominator() in ZZ):
         r += latex(f(0))
     else:
-        r+= "No existe."
+        if (f.denominator()(0) != 0):
+            r += latex(f(0))   
+        else:
+            r+= "No existe."    
     return r
 
 \end{sagesilent}
