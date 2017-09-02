@@ -135,6 +135,7 @@ En este caso:
 def puntosEjeX():
     r=""
     _roots = solve(f(x)==0,x,solution_dict=True)
+    _roots = [a[x] for a in _roots if imag(a[x])==0]
     for i in xrange(len(_roots)):
         r+="$x_"+str(i)+" = "+latex(_roots[i][x])+"$;\\quad"
     if (_roots == []):
@@ -297,8 +298,8 @@ Los puntos en los que a la izquiera la función crece (derivada positiva) y a la
 
 
 
-\subsection{Gráfica}
+%\subsection{Gráfica}
 
-La gráfica de la función es la siguiente:
+%La gráfica de la función es la siguiente:
 
 %\sageplot{plot(f,(x,recta[1]-2,recta[len(recta)-2]+2))}
