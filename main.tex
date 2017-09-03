@@ -5,8 +5,9 @@
 \date{\today}
 \subtitle{Algunos ejemplos resueltos}
 
-\newif\ifbreve
-\brevefalse
+
+\newif\ifverbose
+\verbosefalse
 
 \begin{abstract}
 
@@ -39,11 +40,7 @@ Este documento trata el estudio sistemático de las siguientes funciones:
 	\begin{mdframed}
 	\[f(x) = \sagestr{latex(f(x))}\]
 	\end{mdframed}
-	\ifbreve
-		\input{tex/Solution_Template_scheme}
-	\else
-		\input{tex/Solution_Template_full}
-	\fi
+	\input{tex/Solution_Template_full}
 	\newpage
 }
 
@@ -51,7 +48,21 @@ Este documento trata el estudio sistemático de las siguientes funciones:
 	\input{#1}
 }
 
+
+
 \begin{document}
+
+\ifverbose
+	\begin{sagesilent}
+		Verbose=1
+	\end{sagesilent}
+\else
+	\begin{sagesilent}
+		Verbose=0
+	\end{sagesilent}
+\fi
+
+
 \maketitle
 
 

@@ -17,23 +17,25 @@ def asintotesV():
     r=""
     k=0
 
-    r+= "Soluciones: "
-    for i in den0:
-        r+="$x_"+str(k)+"="+latex(i)+" $;\\quad"
-        k+=1
-    if (den0 == []):
-        r+= "No tiene soluciones reales"
+    if (Verbose == 1):
+        r+= "Soluciones: "
+        for i in den0:
+            r+="$x_"+str(k)+"="+latex(i)+" $;\\quad"
+            k+=1
+        if (den0 == []):
+            r+= "No tiene soluciones reales"
 
     if (TieneLog == 1):
-        r+= "\\paragraph{Atención: } Como la función es un logaritmo, podríamos tener una asíntota vertical (ya que $\\displaystyle\\lim_{x\\mapsto 0^+} \\log(x) = -\infty$). Vamos a comprobarlo.\\\\"
-        
-        r+= "Para ello, calculamos los puntos en los que se haga 0 el interior del logaritmo .\\\\"
-
         _log0 = solve(exp(f)==0,x,solution_dict=True)
         log0 = [a[x] for a in _log0 if imag(a[x])==0]  
 
-        r+= "En este caso:"
+        if (Verbose == 1):
+            r+= "\\paragraph{Atención: } Como la función es un logaritmo, podríamos tener una asíntota vertical (ya que $\\displaystyle\\lim_{x\\mapsto 0^+} \\log(x) = -\infty$). Vamos a comprobarlo.\\\\"
 
+            r+= "Para ello, calculamos los puntos en los que se haga 0 el interior del logaritmo .\\\\"
+
+        
+            r+= "En este caso:"
         r+= "\\[ "+latex(exp(f))+"= 0 \\]"
 
         r+= "Soluciones: "
@@ -45,36 +47,46 @@ def asintotesV():
             r+= "No tiene soluciones reales"
 
     if (den0 == []):
-        r+= "\paragraph{La función no tiene A.V.}"
+        r+= "\\paragraph{La función no tiene A.V.}"
 
     for x0 in den0:
-        r+= "\n \\paragraph{Asintota en x ="
-        r+= "$"+latex(x0)+"$}"
+        r+= "\\paragraph{Asintota en $x ="
+        r+= latex(x0)+"$}"
         ld=limit(f,x=x0,dir="plus")
         li=limit(f,x=x0,dir="minus")
-        r+= "\n Calculamos \[\\lim_{x\\mapsto " + latex(x0) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right.\] "
+        if (Verbose==1): 
+            r+="Calculamos"
+        r+= "\[\\lim_{x\\mapsto " + latex(x0) + "} " + latex(f(x)) + " = \\left\\{\\begin{array}{cc}\\text{Por la derecha: } & x\\mapsto" + latex(ld) + " \\\\ \\text{Por la izquierda: } & x\\mapsto" + latex(li) + "\\end{array}\\right.\] "
         if (abs(li) == Infinity and abs(ld) == Infinity and sign(li) == sign(ld)):
             r+= "\n La recta x =" + latex(x0) + " es una \\textbf{asíntota vertical} de f(x)"
         if (abs(li) == Infinity and abs(ld) == Infinity and sign(li) != sign(ld)):
-            r+= "\n Aunque el límite no exista (porque los límites laterales son diferentes), su magnitud sigue siendo infinita por ambos lados, por lo que la recta x = $" + latex(x0) + "$ es una \\textbf{asíntota vertical} de f(x)"
+            if (Verbose == 1):
+                r+= "\n Aunque el límite no exista (porque los límites laterales son diferentes), su magnitud sigue siendo infinita por ambos lados, por lo que la recta x = $" + latex(x0) + "$ es una \\textbf{asíntota vertical} de f(x)"
+            else:
+                r+= "\n $x = " + latex(x0) + "$ es \\textbf{A.V.} de f(x)"
         else:
             r+= "\n \\textbf{No hay asíntota vertical} en $x="+latex(x0)+"$."
     return r
 \end{sagesilent}
 
+
+\ifverbose
 Los posibles puntos en los que la función puede tener una asíntota vertical son aquellos en los que se anula el denominador. 
 %
 Por ello calculamos:
 
 \[\sagestr{latex(den)} = 0 \]
+\fi
 
 \sagestr{asintotesV()}
 
 \subsubsection{Asíntotas horizontales u oblícuas}
 
+\ifverbose
 Las asíntotas horizontales y oblicuas nos dan la información acerca de la tendencia de la función en $-\infty$ y en $+\infty$.
 
 Para calcular las asíntotas, necesitamos calcular el límite de la función tanto en $+\infty$ como en $-\infty$:
+\fi
 
 \[\lim_{x\mapsto \pm\infty} \sagestr{latex(f(x))} \]
 
@@ -82,28 +94,42 @@ Para calcular las asíntotas, necesitamos calcular el límite de la función tan
 def asintotesHO():
     r=""
     for infty in [Infinity, -Infinity]:
-        r+= "\\paragraph{Límite de la función en $"+latex(infty)+"$:}"
+        if (Verbose == 1):
+            r+= "\\paragraph{Límite de la función en $"+latex(infty)+"$:}"
+        else:
+            r+= "\\paragraph{$"+latex(infty)+"$:}"
         ld=limit(f, x=infty)  
 
         r+= "\[\\lim_{x\\mapsto "+latex(infty)+"}" + latex(f(x)) + "= ... = "+latex(ld)+"\]"    
 
         if (not (abs(ld) == Infinity)): # HORIZONTAL
-            r+= "En $"+latex(infty)
-            r+= "$ f(x) tiene una \\textbf{asíntota horizontal} en $y = "+latex(ld)+"$."
+            if (Verbose == 1):
+                r+= "En $"+latex(infty)
+                r+= "$f(x) tiene una \\textbf{asíntota horizontal} en $y = "+latex(ld)+"$."
+            else:
+                r+= "$y = "+latex(ld) +" $ es una \textbf{A.H.} de f(x)"
 
         else: # OBLICUA
-            r+= "Como el límite obtenido es de magnitud infinita la función no tiene asíntota horizontal, pero puede tener una asíntota oblícua. Para saber si tiene una asíntota oblícua calculamos: "
+            if (Verbose == 1):
+                r+= "Como el límite obtenido es de magnitud infinita la función no tiene asíntota horizontal, pero puede tener una asíntota oblícua. Para saber si tiene una asíntota oblícua calculamos: "
+            else:
+                r+= "No tiene horizontal. ¿Oblícua?"
+
             m=limit(f/x,x=infty)
             r+= "\[m=\\lim_{x\\mapsto "+latex(infty)+"} \\frac{f(x)}{x} = \\lim_{x\\mapsto "+latex(infty)+"} \\frac{"+latex(f(x))+"}{x}=\\lim_{x\\mapsto "+latex(infty)+"} "+latex(f(x)/x)+" = ... = "+latex(m)+"\]"
             if (abs(m) != Infinity):
-                r+= "        En este caso tenemos m=$"+latex(m)+"$ por lo que sí hay asíntota oblícua. Calculamos n:"
-                r+= "    \[n= \\lim_{x\\mapsto "+latex(infty)+"} f(x) - m·x = \\lim_{x\\mapsto "+latex(infty)+"}\\left("+latex(f(x))+"-"+latex(m)+"x \\right) = \\lim_{x\\mapsto "+latex(infty)+"}"+latex(f(x)-m*x)+"\]"
+                if (Verbose == 1):
+                    r+= "        En este caso tenemos m=$"+latex(m)+"$ por lo que sí hay asíntota oblícua. Calculamos n:"
+                r+= "    \[n= \\lim_{x\\mapsto "+latex(infty)+"} f(x) - m·x = \\lim_{x\\mapsto "+latex(infty)+"}\\left("+latex(f(x))+"-"+latex(m)+"x \\right) = \\lim_{x\\mapsto "+latex(infty)+"}"+latex(f(x)-m*x)+" = "+ limit(f-m*x,x=infty)+"\]"
                 _n = limit(f-m*x,x=infty)
                 n=_n
                 y=m*x+n
                 r+= "En $"+latex(infty)+"$, f(x) tiene una \\textbf{asíntota oblícua} en $y="+latex(y)+"$."
             else:
-                r+= "En este caso, ese límite tenemos $m="+latex(m)+"$ por lo que \\textbf{no hay asíntota} oblícua (ni horizontal)."
+                if (Verbose == 1):
+                    r+= "En este caso, ese límite tenemos $m="+latex(m)+"$ por lo que \\textbf{no hay asíntota} oblícua (ni horizontal)."
+                else:
+                    r+= "\\textbf{No hay A.O. ni A.H.}"
 
     return r
 
@@ -115,16 +141,27 @@ def asintotesHO():
 \begin{sagesilent}
 def simetria():
     if (f(x) == f(-x)):
-        return "Sí, a f(x), entonces la función es par."
+        if (Verbose == 1):
+            return "Sí, a f(x), entonces la función es par."
+        else:
+            return "Sí, $\\Rightarrow$ par"
     elif (f(x) == - f(-x)):
-        return "Sí, a -f(x) entonces la función es impar."
+        if (Verbose == 1):
+            return "Sí, a -f(x) entonces la función es impar."
+        else:
+            return "Sí, $\\Rightarrow$ impar"
     else:
-        return "No, entonces la función no tiene simetría respecto del eje Y."
+        if (Verbose == 1):
+            return "No, entonces la función no tiene simetría respecto del eje Y."
+        else:
+            return "No, $\\Rightarrow$ ninguna simetría"
 \end{sagesilent}
 
-Para estudiar la simetría de una función calculamos $f(-x)$ y comparamos con $f(x)$. 
-%
-En este caso:
+\ifverbose
+    Para estudiar la simetría de una función calculamos $f(-x)$ y comparamos con $f(x)$. 
+    %
+    En este caso:
+\fi
 
 \[f(-x) = \sage{latex(f(-x))}\]
 
@@ -156,13 +193,22 @@ def puntosEjeY():
 \end{sagesilent}
 
 \subsubsection{Eje X}
+\ifverbose
 Para calcular los puntos de corte de la función con el eje x resolvemos la ecuación $f(x) = 0$ cuya solución es: 
+\\
+
+\else 
+$f(x) = 0\rightarrow $
+\fi
 \sagestr{puntosEjeX()}
 
 \subsubsection{Eje Y}
+\ifverbose
 Para calcular los puntos de corte de la función con el eje y calculamos $f(0)$. 
 %
-En este caso: \sagestr{puntosEjeY()}
+En este caso:
+\fi
+\sagestr{puntosEjeY()}
 
 
 \subsection{Estudio de la monotonía}
@@ -208,31 +254,49 @@ g=diff(f,x,1)
 g=g.simplify_full()
 \end{sagesilent}
 
+\ifverbose
 La monotonía responde a los intervalos de crecimiento y decrecimiento de la función, así como a la existencia de extremos relativos.
 %
 Para ello, la mejor herramienta es utilizar la derivada de la función.
-
+\fi
 Calculamos la derivada de la función:
 
 \[f'(x) = \sagestr{latex(diff(f,x,1).full_simplify()(x))} \]% = \sagestr{latex(g)} \]
 
-Para calcular los puntos críticos\footnote{Aquellos puntos que pueden marcar un cambio en la tendencia de la función.}, resolvemos f'(x) = 0 cuyas soluciones son: 
+\ifverbose
+    Para calcular los puntos críticos\footnote{Aquellos puntos que pueden marcar un cambio en la tendencia de la función.}, resolvemos f'(x) = 0 cuyas soluciones son:
+    \\
+
+\else
+    Resolvemos $f'(x) = 0\rightarrow $. 
+\fi
 \sagestr{derivadaNula()}
 
+\ifverbose
 E incluimos los puntos de discontinuidad (en caso de haberlos) ya que se puede producir un cambio en la tendencia de la función. 
 %
 Por lo tanto, los puntos críticos son : 
 \sagestr{ptsCriticos()}
 
+\else
+Añadidmos discontinuidades. 
 
+Puntos críticos = \{\sagestr{ptsCriticos()}\}
+\fi
+
+
+
+\ifverbose
 Con estos resultados ya podemos estudiar los intervalos de crecimiento y decrecimiento. 
 %
 Para ello tomamos los siguientes intervalos en los que los puntos críticos dividen la recta real:
+\fi
 
 \sagestr{intervalos()}
 
+\ifverbose
 Y ahora, estudiamos la monotonía el signo de la derivada en esos intervalos:
-   
+\fi
 \begin{sagesilent}
 
 def random_between(j,k):
@@ -263,13 +327,24 @@ def diffsign():
     retval = "\\begin{itemize}"
     for i in xrange(len(recta)-1):
         rval=random_between(recta[i],recta[i+1])
-        retval += "\\item $\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$: Tomamos, por ejemplo, f'($"+latex(round(rval,3))+") = "+latex(round(g(rval),3))+"...$  y miramos su signo:" 
+        retval += "\\item $\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$:"
+        if (Verbose == 1):
+            retval += " Tomamos, por ejemplo, f'($"+latex(round(rval,3))+") = "+latex(round(g(rval),3))+"...$  y miramos su signo:" 
+        else:
+            retval += "f'($"+latex(round(rval,3))+") = "+latex(round(g(rval),3)) +"$"
         prev=actual
         actual=sign(g(rval))
         if actual==1: 
-            retval += "Positivo, por lo que la función \\textbf{crece} en este intervalo"  
+            if (Verbose == 1):
+                retval += "Positivo, por lo que la función \\textbf{crece} en este intervalo"  
+            else:
+                retval += "Positivo $\\Rightarrow$ crece"
         else:
-            retval += "Negativo, por lo que la función \\textbf{decrece} en este intervalo"
+            if (Verbose == 1):
+                retval += "Negativo, por lo que la función \\textbf{decrece} en este intervalo"
+            else:
+                retval += "Negativo $\\Rightarrow$ decrece"
+
         if (prev == -1 and actual == 1):
             min.append(recta[i])
         if (prev == 1 and actual == -1):
@@ -287,12 +362,16 @@ def printlist(m):
 \sagestr{diffsign()}
 
 \subsubsection{Máximos relativos}
+\ifverbose
 Los puntos en los que a la izquiera la función crece (derivada positiva) y a la derecha decrece (derivada negativa) son los máximos relativos. En este caso: 
+\fi
 
 \[\text{Máximos relativos: } \sagestr{printlist(max)}\]
 
 \subsubsection{Mínimos relativos}
+\ifverbose
 Los puntos en los que a la izquiera la función crece (derivada positiva) y a la derecha decrece (derivada negativa) son los máximos relativos. En este caso son: 
+\fi
 
 \[\text{Mínimos relativos: }\sagestr{printlist(min)}\]
 
