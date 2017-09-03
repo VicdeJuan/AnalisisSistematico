@@ -1,11 +1,6 @@
 TARGET=main
 NAME=EstudioFunciones
 
-SCHEME_INPUT=\\def\\scheme{}\\input{$(TARGET)}.tex}
-SCHEME_NAME=$(NAME)_esquema.pdf
-
-FULL_INPUT=\\input{$(TARGET)}.tex}
-FULL_NAME=$(NAME)_esquema.pdf
 
 
 all: sage
