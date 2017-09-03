@@ -258,8 +258,9 @@ g=g.simplify_full()
 La monotonía responde a los intervalos de crecimiento y decrecimiento de la función, así como a la existencia de extremos relativos.
 %
 Para ello, la mejor herramienta es utilizar la derivada de la función.
-\fi
+
 Calculamos la derivada de la función:
+\fi
 
 \[f'(x) = \sagestr{latex(diff(f,x,1).full_simplify()(x))} \]% = \sagestr{latex(g)} \]
 
@@ -299,23 +300,29 @@ Y ahora, estudiamos la monotonía el signo de la derivada en esos intervalos:
 \fi
 \begin{sagesilent}
 
-def random_between(j,k):
-    
 
+def random_between(j,k):
     if ((j==-Infinity) and (k == Infinity)):
-        return 1
+        return 0
 
     if (j==-Infinity):
-        j2=k-2
-    else:
-        j2=j#+0.0001 # El +1 es para evitar divisiones por 0 que podrían darse.
+        return int(k-2)
         
     if (k==Infinity):
-        k2=j2+2
-    else:        
-        k2=k#-0.0001 # El +1 es para evitar divisiones por 0 que podrían darse
+        return int(j+2)
+    
+    if (j < 0 and k>0):
+        return 0
+    
+    if (j < 1 and k>1):
+        return 1
+    
 
-    return random()*(k2-j2)+j2
+    if (k-j>=2):
+        return int(random()*(k-j-1))+j+1
+    else:
+        return round((k+j)/2.0,2)
+        
 
 g=diff(f,x,1)
 max=[]
@@ -329,9 +336,9 @@ def diffsign():
         rval=random_between(recta[i],recta[i+1])
         retval += "\\item $\\left("+latex(recta[i])+","+latex(recta[i+1])+"\\right)$:"
         if (Verbose == 1):
-            retval += " Tomamos, por ejemplo, f'($"+latex(round(rval,3))+") = "+latex(round(g(rval),3))+"...$  y miramos su signo:" 
+            retval += " Tomamos, por ejemplo, f'($"+latex(rval)+") = "+latex(round(g(rval),3))+"...$  y miramos su signo:" 
         else:
-            retval += "f'($"+latex(round(rval,3))+") = "+latex(round(g(rval),3)) +"$"
+            retval += "f'($"+latex(rval)+") = "+latex(round(g(rval),3)) +"$"
         prev=actual
         actual=sign(g(rval))
         if actual==1: 
