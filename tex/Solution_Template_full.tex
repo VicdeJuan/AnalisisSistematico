@@ -134,10 +134,10 @@ En este caso:
 \begin{sagesilent}
 def puntosEjeX():
     r=""
-    _roots = solve(f(x)==0,x,solution_dict=True)
-    _roots = [a[x] for a in _roots if imag(a[x])==0]
+    __roots = solve(f(x)==0,x,solution_dict=True)
+    _roots = [a[x] for a in __roots if imag(a[x])==0]
     for i in xrange(len(_roots)):
-        r+="$x_"+str(i)+" = "+latex(_roots[i][x])+"$;\\quad"
+        r+="$x_"+str(i)+" = "+latex(_roots[i])+"$;\\quad"
     if (_roots == []):
         r += "No tiene solución."
     return r
