@@ -174,7 +174,7 @@ def puntosEjeX():
     __roots = solve(f(x)==0,x,solution_dict=True)
     _roots = [a[x] for a in __roots if imag(a[x])==0]
     for i in xrange(len(_roots)):
-        r+="$x_"+str(i)+" = "+latex(_roots[i])+"$;\\quad"
+        r+="$x_"+str(i)+" = "+latex(_roots[i])+"\\to \\left("+latex(_roots[i])+",0\\right)$;\\quad"
     if (_roots == []):
         r += "No tiene solución."
     return r
@@ -185,7 +185,7 @@ def puntosEjeY():
         r += "$" + latex(f(0)) +"$"
     else:
         if (f.denominator()(0) != 0):
-            r += "$f(0) = " + latex(f(0)) + "$, con lo que la gráfica corta en $(0,"+latex(f(0)) + ")$."   
+            r += "$f(0) = " + latex(f(0)) + "$, con lo que la gráfica corta en $\\left(0,"+latex(f(0)) + "\\right)$ al eje Y."   
         else:
             r +=  "No existe f(0)."    
     return r
@@ -200,7 +200,7 @@ Para calcular los puntos de corte de la función con el eje x resolvemos la ecua
 \else 
 $f(x) = 0\rightarrow $
 \fi
-\sagestr{puntosEjeX()}
+\sagestr{puntosEjeX()} 
 
 \subsubsection{Eje Y}
 \ifverbose
